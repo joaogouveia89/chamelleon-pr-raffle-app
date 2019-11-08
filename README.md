@@ -13,6 +13,13 @@ Things you may want to cover:
 
 * Database creation
 
+open terminal
+
+run:
+sudo -u postgres psql
+create user ctw with encrypted password 'gochameleon;'
+GRANT ALL PRIVILEGES TO ctw
+
 * Database initialization
 
 * How to run the test suite
