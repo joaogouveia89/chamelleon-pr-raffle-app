@@ -1,27 +1,57 @@
 <p id="notice"><%= notice %></p>
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1 class="hd1">Chameleon team Raffle app</h1>
+  </div>
 
-<h1>Raffles</h1>
+  <div class="jumbotron text-center">
+    <h3 class="hd3">Select PR Owner</h3>
+     <select class="custom-select" id="userSelect">
+      <option selected value="-1">Choose...</option>
+      <% @users.each do |user| %>
+      <option value="<%= user.id %>"><%= user.name %></option>
+      <% end %>
+    </select>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+    <div>
+      <div id="preSort">
+        <button class="btn btn-primary try-your-lucky-margin" onclick="tryYourLucky();">Raffle</button>
+      </div>
+      <div id="afterSort">
+        <span id="result">Chosen: </span>
+      </div>
+    </div>
 
-  <tbody>
-    <% @raffles.each do |raffle| %>
+    
+
+  </div>
+
+  
+  
+  <table>
+    <thead>
       <tr>
-        <td><%= raffle.user.name %></td>
-        <td><%= link_to 'Show', raffle %></td>
-        <td><%= link_to 'Edit', edit_raffle_path(raffle) %></td>
-        <td><%= link_to 'Destroy', raffle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>User</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @raffles.each do |raffle| %>
+        <tr>
+          <td><%= raffle.user.name %></td>
+          <td><%= link_to 'Show', raffle %></td>
+          <td><%= link_to 'Edit', edit_raffle_path(raffle) %></td>
+          <td><%= link_to 'Destroy', raffle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Raffle', new_raffle_path %>
+  <br>
+
+  
+
+</div>
+
+

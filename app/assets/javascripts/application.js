@@ -18,3 +18,26 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+
+$("document").ready(function(){
+	$("#afterSort").hide();
+})
+
+function tryYourLucky(){
+	var userId = $("#userSelect").val();
+
+	if(userId == -1){
+		alert("Please, indentify yourself!");
+	}else{
+		 $.ajax({
+		   url: '/raffle',
+		   data: { 
+		           user: userId },
+		   method: 'POST',
+		   success: function (res) {
+		   	$("#afterSort").append(res.raffled);
+		   	$("#afterSort").show();
+		  }
+		}); 
+	}
+}

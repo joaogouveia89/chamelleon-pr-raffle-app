@@ -5,6 +5,7 @@ class RafflesController < ApplicationController
   # GET /raffles.json
   def index
     @raffles = Raffle.all
+    @users = User.all.order("name ASC")
   end
 
   # GET /raffles/1
@@ -61,6 +62,35 @@ class RafflesController < ApplicationController
     end
   end
 
+  def raffle
+    #algorithm: https://stackoverflow.com/questions/1589321/adjust-items-chance-to-be-selected-from-a-list
+    @userId =  params[:user]
+    @toRaffleUsers = User.where.not(id: @userId)
+    @RaffleElements = []
+    @numberOfSorts = Raffle.count
+
+    @toRaffleUsers.each { |current|
+      @RaffleElements << Element.new(current.id, calculate_percentage(Raffle.where(user_id: current.id).count, @numberOfSorts))
+    }
+
+    @RaffleElements.sort_by!{ |m| m.occourencePercentage }
+
+    length = @toRaffleUsers.count
+
+    random = Random.rand(0.0..1.0)
+
+    idx = length * (1 - random) ** (0.5)
+    
+    idx = idx.round()
+
+    rn = User.find(@RaffleElements[idx].id).name
+
+    respond_to do |format|
+      format.json { render json: {"raffled": rn }}
+    end
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_raffle
@@ -70,5 +100,9 @@ class RafflesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def raffle_params
       params.require(:raffle).permit(:user_id)
+    end
+
+    def calculate_percentage(count, numberOfSorts)
+      count*100/numberOfSorts
     end
 end
