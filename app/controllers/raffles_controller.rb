@@ -85,6 +85,10 @@ class RafflesController < ApplicationController
 
     rn = User.find(@RaffleElements[idx].id).name
 
+    raffle = Raffle.new
+    raffle.user_id = @RaffleElements[idx].id
+    raffle.save
+
     respond_to do |format|
       format.json { render json: {"raffled": rn }}
     end

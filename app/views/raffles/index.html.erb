@@ -27,31 +27,23 @@
   </div>
 
   
-  
-  <table>
+  <h3 class="hd3">Previous Raffles</h3>
+  <table class="table">
     <thead>
       <tr>
-        <th>User</th>
-        <th colspan="3"></th>
+        <th scope="col">User</th>
+        <th scope="col">Sorting date</th>
       </tr>
     </thead>
-
     <tbody>
-      <% @raffles.each do |raffle| %>
-        <tr>
+      <% @raffles.order("created_at DESC").each do |raffle| %>
+      <tr>
           <td><%= raffle.user.name %></td>
-          <td><%= link_to 'Show', raffle %></td>
-          <td><%= link_to 'Edit', edit_raffle_path(raffle) %></td>
-          <td><%= link_to 'Destroy', raffle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
+          <td><%= raffle.created_at.strftime("%F")  %></td>
+      </tr>
       <% end %>
     </tbody>
   </table>
-
   <br>
-
-  
-
 </div>
-
 
