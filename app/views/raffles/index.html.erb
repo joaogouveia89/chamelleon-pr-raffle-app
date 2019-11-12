@@ -21,9 +21,25 @@
         <span id="result">Chosen: </span>
       </div>
     </div>
+  </div>
 
+  <div class="jumbotron">
+    <h2 class="hd2 text-center">Statistics</h2>
+    <h4 class="hd4">Number of raffles: <%= getRafflesNumber() %></h4>
+    <hr>
+    <h4 class="hd4">Users statistics</h4>
+
+    <% @users.each do |user| %>
+    <div style="padding-top: 2px;">
+      <span><%= user.name %></span>
+        <span class="progress">
+          <span class="progress-bar" role="progressbar" aria-valuenow="<%= getUserStatistic user.id %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= getUserStatistic user.id %>%; min-width: 2em;" >
+            <%= getUserStatistic user.id %>% <br>
+          </span>
+        </span>  
+    </div>
     
-
+    <% end %>
   </div>
 
   
@@ -31,13 +47,15 @@
   <table class="table">
     <thead>
       <tr>
+        <th scope="col">Raffle n°</th>
         <th scope="col">User</th>
         <th scope="col">Sorting date</th>
       </tr>
     </thead>
     <tbody>
-      <% @raffles.order("created_at DESC").each do |raffle| %>
+      <% @raffles.order("created_at DESC").each_with_index  do |raffle, index| %>
       <tr>
+          <th scope="row"><%= index + 1 %> </th>
           <td><%= raffle.user.name %></td>
           <td><%= raffle.created_at.strftime("%F")  %></td>
       </tr>

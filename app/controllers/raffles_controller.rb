@@ -1,6 +1,8 @@
 class RafflesController < ApplicationController
   before_action :set_raffle, only: [:show, :edit, :update, :destroy]
 
+  helper_method :getRafflesNumber, :getUserStatistic
+
   # GET /raffles
   # GET /raffles.json
   def index
@@ -66,33 +68,41 @@ class RafflesController < ApplicationController
     #algorithm: https://stackoverflow.com/questions/1589321/adjust-items-chance-to-be-selected-from-a-list
     @userId =  params[:user]
     @toRaffleUsers = User.where.not(id: @userId)
-    @RaffleElements = []
+    #@RaffleElements = []
     @numberOfSorts = Raffle.count
 
-    @toRaffleUsers.each { |current|
-      @RaffleElements << Element.new(current.id, calculate_percentage(Raffle.where(user_id: current.id).count, @numberOfSorts))
-    }
+    #@toRaffleUsers.each { |current|
+    #  @RaffleElements << Element.new(current.id, calculate_percentage(Raffle.where(user_id: current.id).count, @numberOfSorts))
+    #}
 
-    @RaffleElements.sort_by!{ |m| m.occourencePercentage }
+  #  @RaffleElements.sort_by!{ |m| m.occourencePercentage }
 
-    length = @toRaffleUsers.count
+ #   length = @toRaffleUsers.count
 
-    random = Random.rand(0.0..1.0)
+    random = Random.rand(0..User.count - 1)
 
-    idx = length * (1 - random) ** (0.5)
+  #  idx = length * (1 - random) ** (0.5)
     
-    idx = idx.round()
+ #   idx = idx.round()
 
-    rn = User.find(@RaffleElements[idx].id).name
+    rn = User.find(@toRaffleUsers[random].id).name
 
     raffle = Raffle.new
-    raffle.user_id = @RaffleElements[idx].id
+    raffle.user_id = @toRaffleUsers[random].id
     raffle.save
 
     respond_to do |format|
       format.json { render json: {"raffled": rn }}
     end
     
+  end
+
+  def getRafflesNumber
+    Raffle.count
+  end
+
+  def getUserStatistic userId
+    calculate_percentage(Raffle.where(user_id: userId).count, getRafflesNumber)
   end
 
   private
