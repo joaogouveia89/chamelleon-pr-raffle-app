@@ -1,30 +1,30 @@
 <p id="notice"><%= notice %></p>
 <div class="container">
   <div class="jumbotron text-center">
-    <h1 class="hd1">Chameleon team Raffle app</h1>
+    <h1 class="hd1">Chameleon team sorteio de PRs</h1>
   </div>
 
   <div class="jumbotron text-center" id="main-sort-jumbotron">
     <div id="preSort">
-      <h3 class="hd3">Select PR Owner</h3>
+      <h3 class="hd3">PR Owner</h3>
       <select class="custom-select" id="userSelect">
-       <option selected value="-1">Choose...</option>
+       <option selected value="-1">Escolha...</option>
        <% @users.each do |user| %>
        <option value="<%= user.id %>"><%= user.name %></option>
        <% end %>
       </select>
-      <button class="btn btn-primary try-your-lucky-margin" onclick="tryYourLucky();">Raffle</button>
+      <button class="btn btn-primary try-your-lucky-margin" onclick="tryYourLucky();">Sortear</button>
     </div>
     <div id="afterSort">
-      <span id="result">Chosen: </span>
+      <span id="result">Escolhido: </span>
     </div>
   </div>
 
   <div class="jumbotron">
-    <h2 class="hd2 text-center">Statistics</h2>
-    <h4 class="hd4">Number of raffles: <%= getRafflesNumber() %></h4>
+    <h2 class="hd2 text-center">Estatísticas</h2>
+    <h4 class="hd4">Total: <%= getRafflesNumber() %> sorteios</h4>
     <hr>
-    <h4 class="hd4">Users statistics</h4>
+    <h4 class="hd4">Estatisticas de sorteio</h4>
     <% if Raffle.count > 0 %>
       <% @users.each do |user| %>
       <div style="padding-top: 2px;">
@@ -40,13 +40,13 @@
   </div>
 
   
-  <h3 class="hd3">Previous Raffles</h3>
+  <h3 class="hd3">Sorteios Anteriores</h3>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Raffle n°</th>
-        <th scope="col">User</th>
-        <th scope="col">Sorting date</th>
+        <th scope="col">n°</th>
+        <th scope="col">Team member</th>
+        <th scope="col">Data</th>
       </tr>
     </thead>
     <tbody>
