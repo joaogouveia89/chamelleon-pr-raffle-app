@@ -16,10 +16,14 @@ ActiveRecord::Schema.define(version: 1) do
   enable_extension "plpgsql"
 
   create_table "raffles", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "pr_owner_id"
+    t.bigint "first_raffle_id"
+    t.bigint "second_raffle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_raffles_on_user_id"
+    t.index ["first_raffle_id"], name: "index_raffles_on_first_raffle_id"
+    t.index ["pr_owner_id"], name: "index_raffles_on_pr_owner_id"
+    t.index ["second_raffle_id"], name: "index_raffles_on_second_raffle_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -29,5 +33,7 @@ ActiveRecord::Schema.define(version: 1) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "raffles", "users"
+  add_foreign_key "raffles", "users", column: "first_raffle_id"
+  add_foreign_key "raffles", "users", column: "pr_owner_id"
+  add_foreign_key "raffles", "users", column: "second_raffle_id"
 end

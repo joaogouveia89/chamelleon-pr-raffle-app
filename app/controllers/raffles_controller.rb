@@ -1,7 +1,7 @@
 class RafflesController < ApplicationController
   before_action :set_raffle, only: [:show, :edit, :update, :destroy]
 
-  helper_method :getRafflesNumber, :getUserStatistic, :reset_raffles
+  helper_method :getRafflesNumber, :getUserStatistic, :reset_raffles, :getSortsCountForUser, :getLastSortDate
 
   # GET /raffles
   # GET /raffles.json
@@ -94,15 +94,7 @@ class RafflesController < ApplicationController
     secondRaffledId = @toRaffleUsers[secondRaffled].id
 
     secondRaffledUser = User.find(secondRaffledId)
-    Raffle.transaction do
-      firstRaffledObject = Raffle.new
-      firstRaffledObject.user_id = firstRaffledUser.id
-      secondRaffledObject = Raffle.new
-      secondRaffledObject.user_id = secondRaffledUser.id
-      firstRaffledObject.save
-      secondRaffledObject.save
-    end
-    
+    raffle = Raffle.create(:pr_owner => User.find(@userId), :first_raffle => firstRaffledUser, :second_raffle => secondRaffledUser)
 
     respond_to do |format|
       format.json { render json: {"raffled1": firstRaffledUser.name, "raffled2":  secondRaffledUser.name}}
@@ -111,11 +103,24 @@ class RafflesController < ApplicationController
   end
 
   def getRafflesNumber
-    Raffle.count / 2
+    Raffle.count
+  end
+
+  def getSortsCountForUser userId
+    Raffle.where(first_raffle_id: userId).or(Raffle.where(second_raffle_id: userId)).count
   end
 
   def getUserStatistic userId
-    calculate_percentage(Raffle.where(user_id: userId).count, getRafflesNumber)
+    calculate_percentage(getSortsCountForUser(userId), getRafflesNumber)
+  end
+
+  def getLastSortDate userId
+    lastRaffle = Raffle.where(first_raffle_id: userId).or(Raffle.where(second_raffle_id: userId)).order("created_at ASC").first
+    if(lastRaffle == nil)
+      "Ainda não sorteado"
+    else
+      "Ultimo sorteio no dia " + lastRaffle.created_at.strftime("%d - %m - %Y")
+    end
   end
 
   private
@@ -126,7 +131,7 @@ class RafflesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def raffle_params
-      params.require(:raffle).permit(:user_id)
+      params.require(:raffle).permit(:first_raffle_id, :second_raffle_id)
     end
 
     def calculate_percentage(count, numberOfSorts)

@@ -36,7 +36,7 @@ function tryYourLucky(){
 		   method: 'POST',
 		   success: function (res) {
 		   	$("#preSort").fadeOut("slow");
-		   	$("#afterSort").fadeIn("slow").html("Sorted: " + res.raffled1 + " e " + res.raffled2);
+		   	$("#afterSort").fadeIn("slow").html("Sorteados: " + res.raffled1 + " e " + res.raffled2);
 		   	$("#afterSort").show();
 		   	$("#main-sort-jumbotron").css("background-color", "#00FF00");
 		   	$("#main-sort-jumbotron").css("font-size", "40px");

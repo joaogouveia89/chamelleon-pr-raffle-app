@@ -22,13 +22,13 @@
 
   <div class="jumbotron">
     <h2 class="hd2 text-center">Estatísticas</h2>
-    <h4 class="hd4">Total: <%= getRafflesNumber() %> sorteios</h4>
+    <h4 class="hd4">Total: <%= getRafflesNumber() %> Sorteios</h4>
     <hr>
     <h4 class="hd4">Estatisticas de sorteio</h4>
     <% if Raffle.count > 0 %>
       <% @users.each do |user| %>
-      <div style="padding-top: 2px;">
-        <span><%= user.name %></span>
+      <div style="padding-top: 20px;">
+        <span><%= user.name %> - <%= getSortsCountForUser(user.id)  %> sorteios - <%= getLastSortDate(user.id) %></span>
           <span class="progress">
             <span class="progress-bar" role="progressbar" aria-valuenow="<%= getUserStatistic user.id %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= getUserStatistic user.id %>%; min-width: 2em;" >
               <%= getUserStatistic user.id %>% <br>
@@ -38,27 +38,6 @@
       <% end %>
     <% end %>
   </div>
-
-  
-  <h3 class="hd3">Sorteios Anteriores</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">n°</th>
-        <th scope="col">Team member</th>
-        <th scope="col">Data</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @raffles.order("created_at DESC").each_with_index  do |raffle, index| %>
-      <tr>
-          <th scope="row"><%= Raffle.count - index %> </th>
-          <td><%= raffle.user.name %></td>
-          <td><%= raffle.created_at.strftime("%F")  %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
   <br>
 </div>
 
