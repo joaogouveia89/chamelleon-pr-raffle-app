@@ -11,7 +11,12 @@
  * It is generally better to create a new file per style scope.
  *
  */
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import "bootstrap";
+
+body{
+	font-family: 'Roboto', sans-serif;
+}
 
 .try-your-lucky-margin{
 	margin-top: 30px;
