@@ -35,8 +35,11 @@ function tryYourLucky(){
 		           user: userId },
 		   method: 'POST',
 		   success: function (res) {
-		   	$("#afterSort").append(res.raffled);
+		   	$("#preSort").fadeOut("slow");
+		   	$("#afterSort").fadeIn("slow").html("Sorted: " + res.raffled1 + " and " + res.raffled2);
 		   	$("#afterSort").show();
+		   	$("#main-sort-jumbotron").css("background-color", "#00FF00");
+		   	$("#main-sort-jumbotron").css("font-size", "40px");
 		  }
 		}); 
 	}

@@ -67,7 +67,7 @@ class RafflesController < ApplicationController
   def raffle
     #algorithm: https://stackoverflow.com/questions/1589321/adjust-items-chance-to-be-selected-from-a-list
     @userId =  params[:user]
-    @toRaffleUsers = User.where.not(id: @userId)
+    @toRaffleUsers = User.where.not(id: @userId).to_a
     #@RaffleElements = []
     @numberOfSorts = Raffle.count
 
@@ -79,20 +79,33 @@ class RafflesController < ApplicationController
 
  #   length = @toRaffleUsers.count
 
-    random = Random.rand(0..User.count - 1)
+    firstRaffled = Random.rand(0..@toRaffleUsers.length)
+    firstRaffledId = @toRaffleUsers[firstRaffled].id
 
   #  idx = length * (1 - random) ** (0.5)
     
  #   idx = idx.round()
 
-    rn = User.find(@toRaffleUsers[random].id).name
+    firstRaffledUser = User.find(firstRaffledId)
 
-    raffle = Raffle.new
-    raffle.user_id = @toRaffleUsers[random].id
-    raffle.save
+    @toRaffleUsers.delete_at(firstRaffled)
+
+    secondRaffled = Random.rand(0..@toRaffleUsers.length)
+    secondRaffledId = @toRaffleUsers[secondRaffled].id
+
+    secondRaffledUser = User.find(secondRaffledId)
+    Raffle.transaction do
+      firstRaffledObject = Raffle.new
+      firstRaffledObject.user_id = firstRaffledUser.id
+      secondRaffledObject = Raffle.new
+      secondRaffledObject.user_id = secondRaffledUser.id
+      firstRaffledObject.save
+      secondRaffledObject.save
+    end
+    
 
     respond_to do |format|
-      format.json { render json: {"raffled": rn }}
+      format.json { render json: {"raffled1": firstRaffledUser.name, "raffled2":  secondRaffledUser.name}}
     end
     
   end
