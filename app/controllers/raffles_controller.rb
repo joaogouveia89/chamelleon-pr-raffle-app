@@ -1,7 +1,7 @@
 class RafflesController < ApplicationController
   before_action :set_raffle, only: [:show, :edit, :update, :destroy]
 
-  helper_method :getRafflesNumber, :getUserStatistic
+  helper_method :getRafflesNumber, :getUserStatistic, :reset_raffles
 
   # GET /raffles
   # GET /raffles.json
@@ -111,7 +111,7 @@ class RafflesController < ApplicationController
   end
 
   def getRafflesNumber
-    Raffle.count
+    Raffle.count / 2
   end
 
   def getUserStatistic userId
