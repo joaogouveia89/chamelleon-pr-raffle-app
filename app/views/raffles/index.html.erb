@@ -28,17 +28,17 @@
     <h4 class="hd4">Number of raffles: <%= getRafflesNumber() %></h4>
     <hr>
     <h4 class="hd4">Users statistics</h4>
-
-    <% @users.each do |user| %>
-    <div style="padding-top: 2px;">
-      <span><%= user.name %></span>
-        <span class="progress">
-          <span class="progress-bar" role="progressbar" aria-valuenow="<%= getUserStatistic user.id %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= getUserStatistic user.id %>%; min-width: 2em;" >
-            <%= getUserStatistic user.id %>% <br>
-          </span>
-        </span>  
-    </div>
-    
+    <% if Raffle.count > 0 %>
+      <% @users.each do |user| %>
+      <div style="padding-top: 2px;">
+        <span><%= user.name %></span>
+          <span class="progress">
+            <span class="progress-bar" role="progressbar" aria-valuenow="<%= getUserStatistic user.id %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= getUserStatistic user.id %>%; min-width: 2em;" >
+              <%= getUserStatistic user.id %>% <br>
+            </span>
+          </span>  
+      </div>
+      <% end %>
     <% end %>
   </div>
 
