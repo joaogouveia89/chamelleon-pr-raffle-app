@@ -40,7 +40,31 @@ function tryYourLucky(){
 		   	$("#afterSort").show();
 		   	$("#main-sort-jumbotron").css("background-color", "#00FF00");
 		   	$("#main-sort-jumbotron").css("font-size", "40px");
-		  }
+		  },
+		  error: function (jqXHR, exception) {
+		        var msg = '';
+		        if (jqXHR.status === 0) {
+		            msg = 'Not connect.\n Verify Network.';
+		        } else if (jqXHR.status == 404) {
+		            msg = 'Requested page not found. [404]';
+		        } else if (jqXHR.status == 500) {
+		            msg = 'Internal Server Error [500].';
+		        } else if (exception === 'parsererror') {
+		            msg = 'Requested JSON parse failed.';
+		        } else if (exception === 'timeout') {
+		            msg = 'Time out error.';
+		        } else if (exception === 'abort') {
+		            msg = 'Ajax request aborted.';
+		        } else {
+		            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+		        }
+
+		        $("#preSort").fadeOut("slow");
+			   	$("#afterSort").fadeIn("slow").html("Erro: " + msg);
+			   	$("#afterSort").show();
+			   	$("#main-sort-jumbotron").css("background-color", "#FF0000");
+			   	$("#main-sort-jumbotron").css("font-size", "40px");
+		    }
 		}); 
 	}
 }
