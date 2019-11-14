@@ -115,7 +115,7 @@ class RafflesController < ApplicationController
   end
 
   def getLastSortDate userId
-    lastRaffle = Raffle.where(first_raffle_id: userId).or(Raffle.where(second_raffle_id: userId)).order("created_at ASC").first
+    lastRaffle = Raffle.where(first_raffle_id: userId).or(Raffle.where(second_raffle_id: userId)).order("created_at DESC").first
     if(lastRaffle == nil)
       "Ainda não sorteado"
     else
