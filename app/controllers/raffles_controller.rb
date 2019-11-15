@@ -65,36 +65,28 @@ class RafflesController < ApplicationController
   end
 
   def raffle
-    #algorithm: https://stackoverflow.com/questions/1589321/adjust-items-chance-to-be-selected-from-a-list
+
     @userId =  params[:user]
     @toRaffleUsers = User.where.not(id: @userId).to_a
-    #@RaffleElements = []
+
+    raffles = []
     @numberOfSorts = Raffle.count
 
-    #@toRaffleUsers.each { |current|
-    #  @RaffleElements << Element.new(current.id, calculate_percentage(Raffle.where(user_id: current.id).count, @numberOfSorts))
-    #}
+    firstRaffledIndex = Random.rand(0..@toRaffleUsers.length-1)
+  
+    firstRaffledUser = @toRaffleUsers[firstRaffledIndex]
 
-  #  @RaffleElements.sort_by!{ |m| m.occourencePercentage }
+    @toRaffleUsers.delete_at(firstRaffledIndex)
 
- #   length = @toRaffleUsers.count
-
-    firstRaffled = Random.rand(0..@toRaffleUsers.length)
-    firstRaffledId = @toRaffleUsers[firstRaffled].id
-
-  #  idx = length * (1 - random) ** (0.5)
-    
- #   idx = idx.round()
-
-    firstRaffledUser = User.find(firstRaffledId)
-
-    @toRaffleUsers.delete_at(firstRaffled)
-
-    secondRaffled = Random.rand(0..@toRaffleUsers.length)
-    secondRaffledId = @toRaffleUsers[secondRaffled].id
-
-    secondRaffledUser = User.find(secondRaffledId)
-    raffle = Raffle.create(:pr_owner => User.find(@userId), :first_raffle => firstRaffledUser, :second_raffle => secondRaffledUser)
+    secondRaffledIndex = Random.rand(0..@toRaffleUsers.length-1)
+    secondRaffledUser = @toRaffleUsers[secondRaffledIndex]
+    r = {
+      pr_owner_id: User.find(@userId).id,
+      first_raffle_id: firstRaffledUser.id,
+      second_raffle_id: secondRaffledUser.id
+    }
+    raffles << r
+    raffle = Raffle.create(raffles)
 
     respond_to do |format|
       format.json { render json: {"raffled1": firstRaffledUser.name, "raffled2":  secondRaffledUser.name}}
